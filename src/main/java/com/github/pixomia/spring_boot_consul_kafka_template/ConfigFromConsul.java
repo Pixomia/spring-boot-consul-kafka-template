@@ -1,4 +1,4 @@
-package com.github.pixomia.spring_boot_consul_template;
+package com.github.pixomia.spring_boot_consul_kafka_template;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
