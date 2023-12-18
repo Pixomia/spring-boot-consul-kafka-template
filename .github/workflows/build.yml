@@ -1,0 +1,56 @@
+name: Build, check and deploy  to github Packages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build, analyze and deploy it
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'zulu' # Alternative distribution options are available.
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build Settings file 
+        uses: s4u/maven-settings-action@v2.8.0
+        with:
+          servers: '[{"id": "github", "username": "${{ github.repository_owner }}", "password": "${{ secrets.GITHUB_TOKEN }}"}]'
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
+      - name: Upload artifacts for subsequent review
+        uses: actions/upload-artifact@master
+        with:
+         name: generated-reports
+         path: |
+          target/site
+          target/dependency-check-report.html
+      - name: Build Settings file part two
+        uses: s4u/maven-settings-action@v2.8.0
+        with:
+          servers: '[{"id": "githubdep", "username": "${{ github.repository_owner }}", "password": "${{ secrets.GITHUB_TOKEN }}"}]'
+      - name: deploy it to github repo
+        run: mvn -B deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
