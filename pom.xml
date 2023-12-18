@@ -10,7 +10,7 @@
 		<relativePath />
 	</parent>
 	<groupId>com.github.pixomia</groupId>
-	<artifactId>spring-boot-consul-template</artifactId>
+	<artifactId>spring-boot-consul-kafka-template</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-consul-template</name>
 	<description>This is an basis Example of an Spring Boot app and consul
