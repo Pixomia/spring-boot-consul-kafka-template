@@ -14,7 +14,8 @@
 	<artifactId>spring-boot-consul-kafka-template</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-consul-kafka-template</name>
-	<description>This is an basis Example of an Spring Boot app, consul and kafka
+	<description>This is an basis Example of an Spring Boot app, consul and
+		kafka
 		connection with running
 		Github Action </description>
 	<properties>
@@ -35,7 +36,7 @@
 		<jacoco.version>0.8.11</jacoco.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
 	</properties>
-	
+
 	<distributionManagement>
 		<repository>
 			<id>github</id>
@@ -125,8 +126,13 @@
 			<artifactId>util</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.pixomia</groupId>
+			<artifactId>kafka-util-services</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
