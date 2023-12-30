@@ -43,9 +43,10 @@ public class KafkaConfig {
     public ConsumerFactory<String, String> consumerFactory() {
 	final Map<String, Object> props = new HashMap<>();
 	props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-	props.put(ConsumerConfig.GROUP_ID_CONFIG, "pixomia");
+	props.put(ConsumerConfig.GROUP_ID_CONFIG, "SpringBootConsulKafkaTemplateApplication");
 	props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 	props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+	props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 	return new DefaultKafkaConsumerFactory<>(props);
     }
 
